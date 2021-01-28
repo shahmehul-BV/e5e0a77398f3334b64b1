@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import Axios from "axios";
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-const API_KEY = "f65d8f01b96f3adfd3438a754e93d219";
+const API_KEY = "9b047c63c88c89b23308d110126e9ee2";
 
-const Details = () => {
+const Details = memo(() => {
   let { id } = useParams();
 
   const [datasource, setDatasource] = useState([]);
-  const [data2, setData2] = useState([]);
+  const [data2, setData2] = useState("");
+  const [setCapital, setSetCapital] = useState([]);
 
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -30,12 +31,12 @@ const Details = () => {
   }));
 
   const apiCall2 = () => {
-    axios
-      .get(`https://restcountries.eu/rest/v2/name/${id}`)
+    Axios.get(`https://restcountries.eu/rest/v2/name/${id}`)
       .then((res) => {
         console.log("details---->", res.data[0].capital);
         setDatasource(res.data);
-        console.log("datasource---->", datasource);
+        setSetCapital(res.data.capital);
+        console.log("datasource---->", datasource, setCapital);
       })
       .catch((err) => {
         console.log("err---->", err);
@@ -43,15 +44,13 @@ const Details = () => {
   };
 
   const apiCall3 = () => {
-    axios
-      .get(
-        `http://api.weatherstack.com/current? access_key=${{
-          API_KEY,
-        }}&query = ${id}`
-      )
+    Axios.get(
+      `http://api.weatherstack.com/current?access_key=${API_KEY}&query=${id}`
+    )
       .then((res) => {
-        console.log("weather--->", res);
-        setData2(res);
+        console.log("weather--->", res.data.current);
+        setData2(res.data.current);
+        console.log("data2--->", data2);
       })
       .catch((err) => {
         console.log("err---->", err);
@@ -59,8 +58,9 @@ const Details = () => {
   };
 
   useEffect(() => {
+    console.log("ID", id);
+    console.log("object", datasource, data2, setCapital);
     apiCall2();
-    apiCall3();
   }, []);
   const classes = useStyles();
   return (
@@ -108,8 +108,35 @@ const Details = () => {
           Capital Weather
         </Button>
       </div>
+      {data2 ? (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            marginTop: "20px",
+          }}
+        >
+          <div>temperature : {data2.temperature}</div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            weather_icons:{" "}
+            <img
+              src={data2.weather_icons}
+              style={{ height: "50px", width: "50px" }}
+            ></img>
+          </div>
+          <div>wind_speed: {data2.wind_speed}</div>
+          <div>precip: {data2.precip}</div>
+        </div>
+      ) : null}
     </div>
   );
-};
+});
 
 export default Details;
