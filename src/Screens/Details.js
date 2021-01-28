@@ -48,9 +48,7 @@ const Details = memo(() => {
       `http://api.weatherstack.com/current?access_key=${API_KEY}&query=${id}`
     )
       .then((res) => {
-        console.log("weather--->", res.data.current);
         setData2(res.data.current);
-        console.log("data2--->", data2);
       })
       .catch((err) => {
         console.log("err---->", err);
