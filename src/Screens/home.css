@@ -1,0 +1,9 @@
+.row-view {
+  content: "";
+  display: flex;
+  clear: both;
+  /* // padding: 50px; */
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}

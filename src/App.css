@@ -28,6 +28,29 @@
   color: #61dafb;
 }
 
+.header {
+  padding: 30px;
+  text-align: center;
+  /* background: red; */
+  border-bottom-width: 1px;
+  border-bottom: solid;
+  /* border: solid; */
+  border-color: black;
+  /* border-width: 10px; */
+  /* background: white; */
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: red;
+  color: black;
+  text-align: center;
+  padding: 20px;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
